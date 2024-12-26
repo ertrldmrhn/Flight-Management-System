@@ -1,19 +1,21 @@
 from flight import Flight
-from logbook import Database
+from logbook import Logbook
+from plane import Plane
 
 
-def initialize_database():    
-    db = Database()
+def initialize_logbook():    
+    db = Logbook()
     db.create_table()
     return db
 
 def create_flight():
     date = input('Enter date: ')
+    model = input('Enter aircraft: ')
     departure = input('Enter departure: ').upper()
     arrival = input('Enter arrival: ').upper()
     runway = input('Enter runway: ').upper()
     gate = input('Enter gate: ').upper()
-    flight = Flight(date,departure,arrival,runway, gate)
+    flight = Flight(date, model, departure, arrival, runway, gate)
     return flight
 
 def add_flight(db):
@@ -58,6 +60,7 @@ def update_flight(db):
         if str(flight.id) == flight_id:
             print("Leave fields blank to keep the current value.")
             flight.date = input(f"Enter new date ({flight.date}): ") or flight.date
+            flight.model = input(f"Enter new aircraft ({flight.model}): ") or flight.model
             flight.departure = input(f"Enter new departure ({flight.departure}): ").upper() or flight.departure
             flight.arrival = input(f"Enter new arrival ({flight.arrival}): ").upper() or flight.arrival
             flight.runway = input(f"Enter new runway ({flight.runway}): ").upper() or flight.runway
@@ -83,7 +86,7 @@ def delete_flight(db):
     print("Flight not found.")
     
 def main_menu():
-    db = initialize_database()
+    db = initialize_logbook()
     
     while True:
         print('\nFlight Logbook Menu')

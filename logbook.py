@@ -1,7 +1,7 @@
 import sqlite3
 from flight import Flight
 
-class Database:
+class Logbook:
     def __init__(self, db_name="logbook.db"):
         self.db_name = db_name
         self.conn = None
@@ -28,6 +28,7 @@ class Database:
         CREATE TABLE IF NOT EXISTS logbook (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             date TEXT,
+            model TEXT
             departure TEXT,
             arrival TEXT,
             runway TEXT,
@@ -43,9 +44,9 @@ class Database:
         self.connect()
         cursor = self.conn.cursor()
         cursor.execute("""
-        INSERT INTO logbook (date, departure, arrival, runway, gate, duration, notes)
+        INSERT INTO logbook (date, model, departure, arrival, runway, gate, duration, notes)
         VALUES (?, ?, ?, ?, ?, ?, ?)
-        """, (flight.date, flight.departure, flight.arrival, flight.runway, flight.gate, flight.duration, flight.notes))
+        """, (flight.date, flight.model, flight.departure, flight.arrival, flight.runway, flight.gate, flight.duration, flight.notes, flight.id))
         flight.id = cursor.lastrowid
         self.conn.commit()
 
@@ -56,9 +57,9 @@ class Database:
         cursor = self.conn.cursor()
         cursor.execute("""
         UPDATE logbook
-        SET date = ?, departure = ?, arrival = ?, runway = ?, gate = ?, duration = ?, notes = ?
+        SET date = ?, model = ?, departure = ?, arrival = ?, runway = ?, gate = ?, duration = ?, notes = ?
         WHERE id = ?
-        """, (flight.date, flight.departure, flight.arrival, flight.runway, flight.gate, flight.duration, flight.notes, flight.id))
+        """, (flight.date, flight.model, flight.departure, flight.arrival, flight.runway, flight.gate, flight.duration, flight.notes, flight.id))
         self.conn.commit()
 
     def delete_flight(self, flight_id):
@@ -76,9 +77,9 @@ class Database:
         rows = cursor.fetchall()
         flights = []
         for row in rows:
-            flight = Flight(row[1], row[2], row[3], row[4], row[5])
+            flight = Flight(row[1], row[2], row[3], row[4], row[5], row[6])
             flight.id = row[0]
-            flight.set_duration(row[6])
-            flight.add_notes(row[7])
+            flight.set_duration(row[7])
+            flight.add_notes(row[8])
             flights.append(flight)
         return flights

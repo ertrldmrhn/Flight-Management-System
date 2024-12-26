@@ -1,6 +1,7 @@
 class Flight:
-    def __init__(self, date, departure, arrival, runway, gate):
+    def __init__(self, model, date, departure, arrival, runway, gate):
         self.id = None 
+        self.model = model
         self.date = date
         self.departure = departure
         self.arrival = arrival
@@ -13,6 +14,7 @@ class Flight:
         """Convert the Flight object to a dictionary."""
         return {
             "id": self.id,
+            "model": self.model,
             "date": self.date,
             "departure": self.departure,
             "arrival": self.arrival,
@@ -26,6 +28,7 @@ class Flight:
         """Define the string representation of a Flight object."""
         return (f"Flight on {self.date}: {self.departure} -> {self.arrival} | "
                 f"Runway: {self.runway}, Gate: {self.gate} | "
+                f"Aircraft: {self.model} | "
                 f"Duration: {self.duration or 'N/A'} | Notes: {self.notes or 'N/A'}")
 
     def set_duration(self, duration):
