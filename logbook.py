@@ -1,7 +1,7 @@
 import sqlite3
 from flight import Flight
 
-class Logbook:
+class LogbookDatabase:
     def __init__(self, db_name="logbook.db"):
         self.db_name = db_name
         self.conn = None
@@ -28,7 +28,7 @@ class Logbook:
         CREATE TABLE IF NOT EXISTS logbook (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             date TEXT,
-            model TEXT
+            model TEXT,
             departure TEXT,
             arrival TEXT,
             runway TEXT,
@@ -45,9 +45,9 @@ class Logbook:
         cursor = self.conn.cursor()
         cursor.execute("""
         INSERT INTO logbook (date, model, departure, arrival, runway, gate, duration, notes)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-        """, (flight.date, flight.model, flight.departure, flight.arrival, flight.runway, flight.gate, flight.duration, flight.notes, flight.id))
-        flight.id = cursor.lastrowid
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, (flight.date, flight.model, flight.departure, flight.arrival, flight.runway, flight.gate, flight.duration, flight.notes))
+        flight.id = cursor.lastrowid  # Retrieve the auto-generated ID
         self.conn.commit()
 
 

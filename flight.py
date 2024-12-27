@@ -1,8 +1,8 @@
 class Flight:
-    def __init__(self, model, date, departure, arrival, runway, gate):
+    def __init__(self, date, model, departure, arrival, runway, gate):
         self.id = None 
-        self.model = model
         self.date = date
+        self.model = model
         self.departure = departure
         self.arrival = arrival
         self.runway = runway
@@ -14,8 +14,8 @@ class Flight:
         """Convert the Flight object to a dictionary."""
         return {
             "id": self.id,
-            "model": self.model,
             "date": self.date,
+            'model': self.model,
             "departure": self.departure,
             "arrival": self.arrival,
             "runway": self.runway,
