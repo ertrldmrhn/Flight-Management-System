@@ -89,7 +89,7 @@ def logbook_menu(logbook):
         print("3. Search Flights")
         print("4. Delete Flight")
         print("5. Update Flight")
-        print("6. Back to Main Menu")
+        print("0. Back to Main Menu")
 
         choice = input("Choose an option: ").strip()
         print()
@@ -104,7 +104,7 @@ def logbook_menu(logbook):
             delete_flight(logbook)
         elif choice == "5":
             update_flight(logbook)
-        elif choice == "6":
+        elif choice == "0":
             break
         else:
             print("Invalid option. Please try again.")
@@ -117,7 +117,7 @@ def plane_menu(plane_db, logbook):
         print("2. View plane statistics")
         print("3. List all planes")
         print("4. Delete Plane")
-        print("5. Back to Main Menu")
+        print("0. Back to Main Menu")
         choice = input("Enter your choice: ").strip()
 
         if choice == "1":
@@ -128,10 +128,10 @@ def plane_menu(plane_db, logbook):
             model = input("Enter the model of the plane to view statistics: ").strip().upper()
             plane_data = plane_db.get_plane(model)
             if plane_data:
+                num_flights, total_duration = plane_db.update_statistics(model, logbook)
                 print(f"--- Statistics for {model} ---")
-                print(f"Number of Flights: {plane_data[2]}")
-                print(f"Total Duration: {plane_data[3]:.2f} hours")
-                print(f"Total Distance: {plane_data[4]:.2f} nautical miles")
+                print(f"Number of Flights: {num_flights}")
+                print(f"Total Duration: {total_duration:.2f} hours")
             else:
                 print(f"Plane '{model}' not found.")
 
@@ -153,7 +153,7 @@ def plane_menu(plane_db, logbook):
             else:
                 print(f"Plane '{model}' not found.")
 
-        elif choice == "5":
+        elif choice == "0":
             break
 
         else:
@@ -166,7 +166,7 @@ def checklist_menu(checklist, plane_db):
         print("2. View a Checklist")
         print("3. Remove a Checklist")
         print("4. Display All Checklists for a Plane")
-        print("5. Back to Main Menu")
+        print("0. Back to Main Menu")
         choice = input("Enter your choice: ").strip()
 
         if choice == "1":
@@ -204,7 +204,7 @@ def checklist_menu(checklist, plane_db):
             print(f"All Checklists for {model}:")
             checklist.display_checklists(model)
 
-        elif choice == "5":
+        elif choice == "0":
             break
 
         else:
@@ -228,7 +228,7 @@ def main_menu():
         print("3. Checklist Menu")
         print("4. Route Planner Menu")
         print("5. Controls Menu")
-        print("6. Exit")
+        print("0. Exit")
         choice = input("Enter your choice: ").strip()
 
         if choice == "1":
@@ -243,7 +243,7 @@ def main_menu():
         elif choice == "5":
             #controls_menu()
             print("\nSorry, this function is under development")
-        elif choice == "6":
+        elif choice == "0":
             print("Exiting program.")
             logbook.close()
             plane_db.close()

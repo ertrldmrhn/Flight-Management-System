@@ -63,16 +63,17 @@ class PlaneDatabase:
         print(f"Plane '{model}' deleted successfully.")
 
     #TODO: statistics don't update from logbook  
-    def update_statistics(self, model, number_of_flights, total_duration, total_distance=0.0):
+    def update_statistics(self, model, logbook):
         """Update a plane's statistics."""
-        self.connect()
-        cursor = self.conn.cursor()
+        logbook.connect()
+        cursor = logbook.conn.cursor()   
         cursor.execute("""
-        UPDATE planes
-        SET number_of_flights = ?, total_duration = ?, total_distance = ?
-        WHERE model = ?
-        """, (number_of_flights, total_duration, total_distance, model))
-        self.conn.commit()
+        SELECT duration FROM logbook WHERE model = ?
+        """, (model,))
+        rows = cursor.fetchall()    
+        number_of_flights = len(rows)
+        total_duration = sum(float(row[0] or 0) for row in rows)  
+        return number_of_flights, total_duration
 
     def list_planes(self):
         """List all planes in the database."""
