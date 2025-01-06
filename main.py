@@ -3,6 +3,7 @@ from logbook import LogbookDatabase
 from plane import Plane
 from checklist import ChecklistDatabase
 from plane_database import PlaneDatabase
+from controls import ControlsDatabase
 
 def logbook_menu(logbook):
     def create_flight():
@@ -210,6 +211,66 @@ def checklist_menu(checklist, plane_db):
         else:
             print("Invalid choice. Please try again.")
 
+def controls_menu(controls):
+    while True:
+        print("\n--- Controls Menu ---")
+        print("1. Create a New Profile")
+        print("2. View All Profiles")
+        print("3. Delete a Profile")
+        print("4. Add Button Mapping")
+        print("5. View Mappings for a Profile")
+        print("6. Delete a Mapping")
+        print("7. Update a Mapping")
+        print("0. Back to Main Menu")
+        choice = input("Enter your choice: ").strip()
+
+        if choice == "1":
+            name = input("Enter the profile name: ").strip()
+            type = input("Enter the profile type (mouse/controller/joystick): ").strip().lower()
+            controls.add_profile(name, type)
+            print("Profile added successfully!")
+
+        elif choice == "2":
+            profiles = controls.get_profiles()
+            print("\n--- Profiles ---")
+            for profile in profiles:
+                print(f"ID: {profile[0]}, Name: {profile[1]}, Type: {profile[2]}")
+
+        elif choice == "3":
+            profile_id = int(input("Enter the Profile ID to delete: "))
+            controls.delete_profile(profile_id)
+
+        elif choice == "4":
+            profile_id = int(input("Enter the Profile ID: "))
+            buttons = input("Enter the button combination: ").strip()
+            function = input("Enter the function to assign: ").strip()
+            controls.add_mapping(profile_id, buttons, function)
+            print("Mapping added successfully!")
+
+        elif choice == "5":
+            profile_id = int(input("Enter the Profile ID: "))
+            mappings = controls.get_mappings(profile_id)
+            print("\n--- Mappings ---")
+            for mapping in mappings:
+                print(f"ID: {mapping[0]}, Buttons: {mapping[2]}, Function: {mapping[3]}")
+
+        elif choice == "6":
+            mapping_id = int(input("Enter the Mapping ID to delete: "))
+            controls.delete_mapping(mapping_id)
+            print("Mapping deleted successfully!")
+
+        elif choice == "7":
+            mapping_id = int(input("Enter the Mapping ID to update: "))
+            print("Leave fields blank if you don't want to update them.")
+            buttons = input("Enter the new button combination (or press Enter to skip): ").strip() or None
+            function = input("Enter the new function (or press Enter to skip): ").strip() or None
+            controls.update_mapping(mapping_id, buttons, function)
+
+        elif choice == "0":
+            break
+
+        else:
+            print("Invalid choice. Please try again.")
 
 
 def main_menu():
@@ -219,7 +280,8 @@ def main_menu():
     plane_db.create_table()
     checklist = ChecklistDatabase()
     checklist.create_table()
-
+    controls = ControlsDatabase()
+    controls.create_tables()
 
     while True:
         print("\n--- Main Menu ---")
@@ -241,13 +303,13 @@ def main_menu():
             #route_planner_menu()
             print("\nSorry, this function is under development")
         elif choice == "5":
-            #controls_menu()
-            print("\nSorry, this function is under development")
+            controls_menu(controls)
         elif choice == "0":
             print("Exiting program.")
             logbook.close()
             plane_db.close()
             checklist.close()
+            controls.close()
             break
         else:
             print("Invalid option. Please try again.")

@@ -1,4 +1,4 @@
-# MSFS_Project
+# Flight Management System
  Personal companion app for MSFS flights
 
 Features
@@ -12,6 +12,8 @@ Plane Menu
 	•	Add aircraft models and track statistics like total flights and flight hours.
 	•	Create and manage pre-flight, in-flight, and post-flight checklists for your favorite planes.
 
+Controls Manager
+	•	Organize your flight hardware bindings.
+
 Future Features
 	•	Route Planner: Plan realistic routes with waypoints.
-	•	Controls Manager: Organize your flight hardware bindings.

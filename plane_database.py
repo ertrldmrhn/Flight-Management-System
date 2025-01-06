@@ -61,8 +61,7 @@ class PlaneDatabase:
         cursor.execute("DELETE FROM planes WHERE model = ?", (model,))
         self.conn.commit()
         print(f"Plane '{model}' deleted successfully.")
-
-    #TODO: statistics don't update from logbook  
+ 
     def update_statistics(self, model, logbook):
         """Update a plane's statistics."""
         logbook.connect()

@@ -34,11 +34,11 @@ class ChecklistDatabase:
         """Add or update a checklist for a specific plane model and phase."""
         self.connect()
         cursor = self.conn.cursor()
-        # Remove existing checklist items for this model and phase
+        
         cursor.execute("""
         DELETE FROM checklists WHERE model = ? AND phase = ?
         """, (model, phase))
-        # Insert the new checklist items
+       
         for item in items:
             cursor.execute("""
             INSERT INTO checklists (model, phase, item)
